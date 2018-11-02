@@ -1,4 +1,4 @@
-global.projectRoot = __dirname;
+global.projectRoot = __dirname
 
 const express = require('express')
 const member = require( `${ global.projectRoot }/routes/member` )

@@ -9,6 +9,7 @@ const sequelize = new Sequelize(
     host: config.host,
     dialect: config.dialect,
     logging: false,
+    timezone: '+08:00',
     operatorsAliases: {
       $and: Op.and,
       $or: Op.or,

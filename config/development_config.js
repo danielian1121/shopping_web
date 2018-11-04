@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 const config = {}
 
 Object.defineProperties(config, {
@@ -17,6 +15,9 @@ Object.defineProperties(config, {
   },
   'dialect': {
     value: 'mysql'
+  },
+  'secret': {
+    value: '123456789'
   }
 })
 module.exports = config

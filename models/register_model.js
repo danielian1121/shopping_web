@@ -15,8 +15,7 @@ module.exports = function register(memberData) {
         result.registerMember = memberData
         resolve(result)
       }
-    }).catch(err => {
-      console.log(err);
+    }).catch(() => {
       result.status = '註冊失敗。'
       result.err = '伺服器錯誤，請稍後在試！'
       reject(result)

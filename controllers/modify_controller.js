@@ -4,6 +4,8 @@ const encryption = require('../models/encryption')
 const loginAction = require('../models/login_model')
 const config = require('../config/development_config')
 const jwt = require('jsonwebtoken')
+const verify = require('../models/verification_model')
+const updateAction = require('../models/update_model')
 check = new Check();
 
 module.exports = class Member {
@@ -42,13 +44,13 @@ module.exports = class Member {
 		}
 	}
 	postLogin(req, res, next) {
-		const password = encryption(req.body.password)
-		const memberData = {
+		let password = encryption(req.body.password)
+		let memberData = {
 			email: req.body.email,
 			password: password
 		}
 		loginAction(memberData).then(data => {
-			const token = jwt.sign({
+			let token = jwt.sign({
 				algorithm: 'HS256',
         exp: Math.floor(Date.now() / 1000) + (60 * 60), // token一個小時後過期。
         data: data.id
@@ -68,6 +70,44 @@ module.exports = class Member {
 				}
 			})
 		})
+	}
+	postUpdate(req, res, next) {
+		let token = req.headers['token']
+		if (!token) {
+			res.json({
+				err: '請輸入token'
+			})
+		} else {
+			verify(token).then(result => {
+				let id = result
+				let password = encryption(req.body.password)
+				let memberUpdateData = { //要修改成根據body有什麼而修改什麼
+					name: req.body.name,
+					password: password,
+					update_date: onTime()
+				}
+				updateAction(id, memberUpdateData).then(result => {
+					res.json({
+						result: {
+							test: '更改完成'
+						}
+					})
+				}).catch(err => {
+					res.json({
+						result: {
+							test: '錯誤'
+						}
+					})
+				})
+			}).catch(err => {
+				res.json({
+					result: {
+						status: "token錯誤。",
+						err: "請重新登入。"
+					}
+				})
+			})
+		}
 	}
 }
 

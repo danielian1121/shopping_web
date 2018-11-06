@@ -6,6 +6,9 @@ const config = require('../config/development_config')
 const jwt = require('jsonwebtoken')
 const verify = require('../models/verification_model')
 const updateAction = require('../models/update_model')
+const formidable = require('formidable')
+const uploadImg = require('../models/uploadImg_model')
+const deleteImg =require('../models/deleteImg_model')
 check = new Check();
 
 module.exports = class Member {
@@ -98,6 +101,69 @@ module.exports = class Member {
 							test: '錯誤'
 						}
 					})
+				})
+			}).catch(err => {
+				res.json({
+					result: {
+						status: "token錯誤。",
+						err: "請重新登入。"
+					}
+				})
+			})
+		}
+	}
+	updateImg(req, res, next) {
+		let token = req.headers['token']
+		if (!token) {
+			res.json({
+				err: '請輸入token'
+			})
+		} else {
+			verify(token).then(result => {
+				let id = result
+				let form = new formidable.IncomingForm()
+				form.parse(req, (err, fields, files) => {
+					if (files.file.size >= 1 * 1024 * 1024) {
+						res.json({
+							result: 'error!',
+							reason: '照片超過1 MB'
+						})
+					} else {
+						deleteImg(id).then(() => {
+							/////////////
+							let fileInfo = {
+								path: files.file.path,
+								title: files.file.name,
+								name: files.file.name,
+								type: files.file.type,
+							}
+							uploadImg(fileInfo).then(path => {
+								let memberUpdateData = {
+									img: path,
+									update_date: onTime()
+								}
+								updateAction(id, memberUpdateData).then(result => {
+									res.json({
+										result: {
+											test: '照片更改完成'
+										}
+									})
+								}).catch(err => {
+									res.json({
+										result: {
+											test: '錯誤'
+										}
+									})
+								})
+							}).catch(err => {
+								console.log(err)
+								res.json({
+									result: 'error!',
+									reason: '照片未保存，請稍後再試'
+								})
+							})
+						})
+					}
 				})
 			}).catch(err => {
 				res.json({

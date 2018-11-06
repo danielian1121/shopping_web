@@ -18,6 +18,9 @@ Object.defineProperties(config, {
   },
   'secret': {
     value: '123456789'
+  },
+  'imgToken': {
+    value: 'Bearer 403178fe96b7c20545af861cfd8b20e13d3bc9fc'
   }
 })
 module.exports = config

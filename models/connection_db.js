@@ -25,7 +25,7 @@ const member_info = sequelize.define('member_info', {
   name: { type: Sequelize.STRING, allowNull: false},
   email: { type: Sequelize.STRING, allowNull: false},
   password: { type: Sequelize.STRING, allowNull: false},
-  img: { type: Sequelize.BLOB, allowNull: true},
+  img: { type: Sequelize.STRING, allowNull: true},
   img_name: { type: Sequelize.STRING, allowNull: true},
   update_date: { type: Sequelize.DATE, allowNull: true},
   create_date: { type: Sequelize.DATE, allowNull: false},

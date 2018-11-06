@@ -8,6 +8,8 @@ router.post('/register', memberModifyMethod.postRegister)
 
 router.post('/login', memberModifyMethod.postLogin)
 
-router.post('/update', memberModifyMethod.postUpdate)
+router.put('/update', memberModifyMethod.postUpdate)
+
+router.put('/updateimg', memberModifyMethod.updateImg)
 
 module.exports = router

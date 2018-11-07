@@ -1,6 +1,6 @@
-const db = require('./connection_db').member_info
+const db = require('../connection_db').memberInfo
 
-module.exports = function register(memberData) {
+module.exports = function register (memberData) {
   let result = {}
   return new Promise((resolve, reject) => {
     db.findOrCreate({
@@ -11,7 +11,7 @@ module.exports = function register(memberData) {
         result.status = '註冊失敗。'
         result.err = '此email已被註冊過'
         reject(result)
-      }else {
+      } else {
         result.registerMember = memberData
         resolve(result)
       }

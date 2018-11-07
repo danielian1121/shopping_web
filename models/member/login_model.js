@@ -1,6 +1,6 @@
-const db = require('./connection_db').member_info
+const db = require('../connection_db').memberInfo
 
-module.exports = function memberLogin(memberData) {
+module.exports = function memberLogin (memberData) {
   return new Promise((resolve, reject) => {
     db.findAll({
       where: {
@@ -9,8 +9,8 @@ module.exports = function memberLogin(memberData) {
       }
     }).then(rows => {
       resolve(rows[0].dataValues)
-    }).catch(() => {
-      reject()
+    }).catch(err => {
+      reject(err)
     })
   })
 }

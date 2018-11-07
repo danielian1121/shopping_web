@@ -20,22 +20,22 @@ const sequelize = new Sequelize(
       $like: Op.like
     }
   })
-const member_info = sequelize.define('member_info', {
-  id: { type: Sequelize.INTEGER, primaryKey: true, allowNull: false},
-  name: { type: Sequelize.STRING, allowNull: false},
-  email: { type: Sequelize.STRING, allowNull: false},
-  password: { type: Sequelize.STRING, allowNull: false},
-  img: { type: Sequelize.STRING, allowNull: true},
-  img_name: { type: Sequelize.STRING, allowNull: true},
-  update_date: { type: Sequelize.DATE, allowNull: true},
-  create_date: { type: Sequelize.DATE, allowNull: false},
+const memberInfo = sequelize.define('member', {
+  id: { type: Sequelize.INTEGER, primaryKey: true, allowNull: false },
+  name: { type: Sequelize.STRING, allowNull: false },
+  email: { type: Sequelize.STRING, allowNull: false },
+  password: { type: Sequelize.STRING, allowNull: false },
+  img: { type: Sequelize.STRING, allowNull: true },
+  img_name: { type: Sequelize.STRING, allowNull: true },
+  update_date: { type: Sequelize.DATE, allowNull: true },
+  create_date: { type: Sequelize.DATE, allowNull: false }
 }, {
   timestamps: false,
-  tableName: 'member_info'
+  tableName: 'member'
 })
 
-member_info.sync()
+memberInfo.sync()
 
 module.exports = {
-  member_info
+  memberInfo
 }

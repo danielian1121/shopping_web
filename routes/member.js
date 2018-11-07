@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
-const MemberModifyMethod = require('../controllers/modify_controller')
-memberModifyMethod = new MemberModifyMethod()
+const MemberModifyMethod = require('../controllers/member/modify_controller')
+const memberModifyMethod = new MemberModifyMethod()
 
 router.post('/register', memberModifyMethod.postRegister)
 

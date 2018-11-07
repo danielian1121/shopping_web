@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
-const config = require('../config/development_config')
+const config = require('../../config/development_config')
 
-module.exports = function verifyToken(token) {
+module.exports = function verifyToken (token) {
   const time = Math.floor(Date.now() / 1000)
   return new Promise((resolve, reject) => {
     if (token) {

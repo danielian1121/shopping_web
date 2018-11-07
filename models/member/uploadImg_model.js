@@ -1,7 +1,7 @@
-const config = require('../config/development_config')
+const config = require('../../config/development_config')
 const fs = require('fs')
 const rp = require('request-promise')
-module.exports = function uploadImg(file) {
+module.exports = function uploadImg (file) {
   return new Promise((resolve, reject) => {
     let setting = {
       method: 'POST',
@@ -11,13 +11,13 @@ module.exports = function uploadImg(file) {
         image: fs.createReadStream(file.path),
         'title': file.title,
         'name': file.name,
-        'type': file.type,
+        'type': file.type
       },
       headers: {
         Authorization: config.imgToken
       }
     }
     rp(setting).then(result => resolve(result.data.link))
-    .catch(err => reject(err))
+      .catch(err => reject(err))
   })
 }

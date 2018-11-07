@@ -2,7 +2,7 @@ const config = {}
 
 Object.defineProperties(config, {
   'database': {
-    value: 'shopping'
+    value: 'shopping_cart'
   },
   'username': {
     value: 'daniel'

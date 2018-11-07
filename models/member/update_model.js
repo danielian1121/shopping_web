@@ -1,6 +1,6 @@
-const db = require('./connection_db').member_info
+const db = require('../connection_db').memberInfo
 
-module.exports = function memberEdit(id, memberUpdateDate) {
+module.exports = function memberEdit (id, memberUpdateDate) {
   return new Promise((resolve, reject) => {
     db.update(memberUpdateDate, {
       where: {

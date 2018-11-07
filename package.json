@@ -6,7 +6,10 @@
   "scripts": {
     "test": "mocha",
     "start": "node index.js",
-    "d": "nodemon server.js"
+    "d": "nodemon server.js",
+    "html": "webpack --watch --config dev/html/webpack.config.js",
+    "css": "webpack --watch --config dev/css/webpack.config.js",
+    "js": "webpack --watch --config dev/js/webpack.config.js"
   },
   "author": "",
   "license": "ISC",
@@ -25,7 +28,15 @@
     "sequelize": "^4.41.0"
   },
   "devDependencies": {
+    "css-loader": "^1.0.1",
+    "extract-loader": "^3.0.0",
+    "file-loader": "^2.0.0",
+    "html-loader": "^0.5.5",
     "mocha": "^5.2.0",
+    "pug-html-loader": "^1.1.5",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "url-loader": "^1.1.2",
     "webpack": "^4.23.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"

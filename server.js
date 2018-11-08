@@ -11,4 +11,10 @@ server.use(bodyParser.urlencoded({ // to support URL-encoded bodies
   extended: true
 }))
 
+server.use('/js', express.static(`${global.projectRoot}/static/dist/js`))
+
 server.use('/member', member)
+
+server.get('/', (req, res) => {
+  res.sendFile(`${global.projectRoot}/static/dist/html/home/index.html`)
+})

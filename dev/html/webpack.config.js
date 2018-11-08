@@ -1,5 +1,6 @@
 const path = require('path')
 const projectRoot = path.dirname(path.dirname(__dirname))
+const { staticUrl } = require(path.join(projectRoot, 'setting/server/config'))
 const devMode = true
 
 module.exports = {
@@ -25,7 +26,15 @@ module.exports = {
           },
           'extract-loader',
           'html-loader',
-          'pug-html-loader'
+          {
+            loader: 'pug-html-loader',
+            options: {
+              basedir: path.join(projectRoot, 'static/src/pug'),
+              data: {
+                staticUrl
+              }
+            }
+          }
         ]
       },
       {

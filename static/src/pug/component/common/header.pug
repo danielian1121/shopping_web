@@ -1,0 +1,11 @@
+mixin header()
+  header.header
+    a.header__logo.logo(href = '/')
+      +image({
+        alt: 'logo',
+        className: 'logo__image',
+        src: 'logo.png'
+      })
+    form.header__search.search(autocomplete = 'off')
+      input.search__text(type = 'text', placeholder = '搜尋', maxlength = 128, value)
+    button.header__searchSubmit

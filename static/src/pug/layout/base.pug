@@ -8,10 +8,13 @@ html
     block stylesheets
 
   body
+    include /component/common/image.pug
+    include /component/common/header.pug
     block header
-
+      +header()
     block content
 
     block footer
 
+    include /component/common/js.pug
     block scripts

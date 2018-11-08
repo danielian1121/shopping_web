@@ -1,7 +1,9 @@
+extends /layout/home.pug
+
+append stylesheets
+
 append content
-  h1.content hello
-  img(src = './1.png')
-  h2.conten asdafrqr
-append script
+
+append scripts
   // 路徑用相對會有安全問題
-  script( src=`http://127.0.0.1:5500/static/dist/js/home/index.js` )
+  +js('home/index')

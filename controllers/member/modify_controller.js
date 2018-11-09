@@ -1,6 +1,6 @@
 const toRegister = require('../../models/member/register_model')
 const Check = require('../../service/member_check')
-const encryption = require('../../models/member/encryption')
+const encryption = require('../../models/member/encryption_model')
 const loginAction = require('../../models/member/login_model')
 const config = require('../../config/development_config')
 const jwt = require('jsonwebtoken')
@@ -12,115 +12,117 @@ const deleteImg = require('../../models/member/deleteImg_model')
 const check = new Check()
 
 module.exports = class Member {
-  postRegister (req, res, next) {
-    const password = encryption(req.body.password)
-    // 獲取client端資料
-    const memberData = {
+  postRegister (req, res) {
+    let memberData = {
       id: '',
       name: req.body.name,
+      password: req.body.password,
       email: req.body.email,
-      password: password,
       create_date: onTime()
     }
-    const checkEmail = check.checkEmail(memberData.email)
-    if (!checkEmail) {
-      res.json({
-        result: {
-          status: '註冊失敗。',
-          err: '請輸入正確的Eamil格式。(如1234@email.com)'
-        }
+    check.checkRegisterinfo(memberData)
+      .then(() => {
+        return encryption(memberData.password)
       })
-    } else {
-      // 將資料寫入資料庫
-      toRegister(memberData).then(result => {
-        // 若寫入成功則回傳
+      .then(password => {
+        memberData.password = password
+        return check.checkEmail(memberData.email)
+      })
+      .then(() => {
+        return toRegister(memberData)
+      })
+      .then(data => {
         res.json({
           status: '註冊成功。',
-          result: result
+          result: data
         })
-      }, (err) => {
-        // 若寫入失敗則回傳
+      })
+      .catch(e => {
         res.json({
           status: '註冊失敗。',
-          result: err
+          err: e.message
         })
       })
-    }
   }
 
-  postLogin (req, res, next) {
-    const password = encryption(req.body.password)
-    const memberData = {
+  postLogin (req, res) {
+    let memberData = {
       email: req.body.email,
-      password: password
+      password: req.body.password
     }
-    loginAction(memberData).then(data => {
-      const token = jwt.sign({
-        algorithm: 'HS256',
-        exp: Math.floor(Date.now() / 1000) + (60 * 60), // token一個小時後過期。
-        data: data.id
-      }, config.secret) // 需要再另外設置key
-      res.setHeader('token', token)
-      res.json({
-        result: {
-          status: '登入成功。',
-          loginMember: `歡迎${data.name}的登入!`
-        }
+    check.checkLogininfo(memberData)
+      .then(() => {
+        return encryption(memberData.password)
       })
-    }).catch(() => {
-      res.json({
-        result: {
-          status: '登入失敗。',
-          err: '請輸入正確的帳號或密碼。'
-        }
+      .then(password => {
+        memberData.password = password
+        return loginAction(memberData)
       })
-    })
+      .then(data => {
+        const token = jwt.sign({
+          algorithm: 'HS256',
+          exp: Math.floor(Date.now() / 1000) + (60 * 60), // token一個小時後過期。
+          data: data.id
+        }, config.secret) // 需要再另外設置key
+        res.setHeader('token', token)
+        res.json({
+          result: {
+            status: '登入成功。',
+            loginMember: `歡迎${data.name}的登入!`
+          }
+        })
+      })
+      .catch(e => {
+        res.json({
+          result: {
+            status: '登入失敗',
+            err: e.message
+          }
+        })
+      })
   }
 
-  postUpdate (req, res, next) {
-    let token = req.headers['token']
+  postUpdate (req, res) {
+    const token = req.headers['token']
     if (!token) {
       res.json({
-        err: '請輸入token'
+        status: '更新失敗',
+        err: '請重新登入。'
       })
     } else {
-      verify(token).then(result => {
-        let id = result
-        let password = encryption(req.body.password)
-        let memberUpdateData = { // 要修改成根據body有什麼而修改什麼
-          name: req.body.name,
-          password: password,
-          update_date: onTime()
-        }
-        updateAction(id, memberUpdateData).then(result => {
+      let memberUpdateData = {
+        name: req.body.name,
+        password: req.body.password,
+        update_date: onTime()
+      }
+      verify(token)
+        .then(result => {
+          return updateAction(result, memberUpdateData)
+        })
+        .then(() => {
           res.json({
             result: {
               test: '更改完成'
             }
           })
-        }).catch(() => {
+        })
+        .catch(e => {
           res.json({
             result: {
-              test: '錯誤'
+              status: '更新失敗',
+              err: e.message
             }
           })
         })
-      }).catch(() => {
-        res.json({
-          result: {
-            status: 'token錯誤。',
-            err: '請重新登入。'
-          }
-        })
-      })
     }
   }
 
-  updateImg (req, res, next) {
+  updateImg (req, res) {
     let token = req.headers['token']
     if (!token) {
       res.json({
-        err: '請輸入token'
+        status: '更新失敗',
+        err: '請重新登入。'
       })
     } else {
       verify(token).then(result => {
@@ -129,54 +131,62 @@ module.exports = class Member {
         form.parse(req, (err, fields, files) => {
           if (err) {
             res.json({
-              result: 'error!'
+              status: '更新失敗',
+              err: '請稍後再試'
             })
           } else if (files.file.size >= 1 * 1024 * 1024) {
             res.json({
-              result: 'error!',
-              reason: '照片超過1 MB'
+              status: '更新失敗',
+              err: '照片超過 1MB'
+            })
+          } else if (files.file.type !== 'image/png' && files.file.type !== 'image/jpg' && files.file.type !== 'image/jpeg') {
+            res.json({
+              status: '更新失敗',
+              err: '請上傳正確的照片類型'
             })
           } else {
-            deleteImg(id).then(() => {
-              let fileInfo = {
-                path: files.file.path,
-                title: files.file.name,
-                name: files.file.name,
-                type: files.file.type
-              }
-              uploadImg(fileInfo).then(path => {
+            deleteImg(id)
+              .catch(e => {
+                res.json({
+                  status: '更新失敗',
+                  err: e.message
+                })
+              })
+              .then(() => {
+                let fileInfo = {
+                  path: files.file.path,
+                  title: files.file.name,
+                  name: files.file.name,
+                  type: files.file.type
+                }
+                return uploadImg(fileInfo)
+              })
+              .catch(e => {
+                res.json({
+                  status: '更新失敗',
+                  err: e.message
+                })
+              })
+              .then(path => {
                 let memberUpdateData = {
                   img: path,
                   update_date: onTime()
                 }
-                updateAction(id, memberUpdateData).then(result => {
-                  res.json({
-                    result: {
-                      test: '照片更改完成'
-                    }
-                  })
-                }).catch(() => {
-                  res.json({
-                    result: {
-                      test: '錯誤'
-                    }
-                  })
-                })
-              }).catch(err => {
-                console.log(err)
+                return updateAction(id, memberUpdateData)
+              })
+              .then(() => {
                 res.json({
-                  result: 'error!',
-                  reason: '照片未保存，請稍後再試'
+                  result: {
+                    status: '照片更新完成'
+                  }
                 })
               })
-            })
-          }
-        })
-      }).catch(() => {
-        res.json({
-          result: {
-            status: 'token錯誤。',
-            err: '請重新登入。'
+              .catch(e => {
+                res.json({
+                  status: '更新失敗',
+                  err: e.message
+                })
+              })
           }
         })
       })

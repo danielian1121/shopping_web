@@ -7,14 +7,11 @@ module.exports = function verifyToken (token) {
     if (token) {
       jwt.verify(token, config.secret, (err, decoded) => {
         if (err) {
-          let tokenResult = err
-          reject(tokenResult)
+          reject(new Error('請重新登入'))
         } else if (decoded.exp <= time) {
-          let tokenResult = 'token expired'
-          reject(tokenResult)
+          reject(new Error('請重新登入'))
         } else {
-          let tokenResult = decoded.data
-          resolve(tokenResult)
+          resolve(decoded.data)
         }
       })
     }

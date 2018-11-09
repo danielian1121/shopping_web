@@ -1,24 +1,18 @@
-const db = require('../connection_db').memberInfo
+const member = require('../connection_db').memberInfo
 
 module.exports = function register (memberData) {
-  let result = {}
   return new Promise((resolve, reject) => {
-    db.findOrCreate({
+    member.findOrCreate({
       where: { email: memberData.email },
       defaults: memberData
     }).then(rows => {
       if (rows[0].dataValues.id) {
-        result.status = '註冊失敗。'
-        result.err = '此email已被註冊過'
-        reject(result)
+        reject(new Error('此email已被註冊過'))
       } else {
-        result.registerMember = memberData
-        resolve(result)
+        resolve(memberData)
       }
     }).catch(() => {
-      result.status = '註冊失敗。'
-      result.err = '伺服器錯誤，請稍後在試！'
-      reject(result)
+      reject(new Error('伺服器錯誤，請稍後在試！'))
     })
   })
 }

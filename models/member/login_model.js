@@ -1,16 +1,16 @@
-const db = require('../connection_db').memberInfo
+const member = require('../connection_db').memberInfo
 
 module.exports = function memberLogin (memberData) {
   return new Promise((resolve, reject) => {
-    db.findAll({
+    member.findAll({
       where: {
         email: memberData.email,
         password: memberData.password
       }
     }).then(rows => {
       resolve(rows[0].dataValues)
-    }).catch(err => {
-      reject(err)
+    }).catch(() => {
+      reject(new Error('帳號或密碼錯誤'))
     })
   })
 }

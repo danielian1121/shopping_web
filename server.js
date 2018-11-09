@@ -18,3 +18,5 @@ server.use('/member', member)
 server.get('/', (req, res) => {
   res.sendFile(`${global.projectRoot}/static/dist/html/home/index.html`)
 })
+
+module.exports = server

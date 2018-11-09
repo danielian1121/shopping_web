@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "develop": "npm-run-all --parallel nodemon watch",
-    "nodemon": "nodemon server.js",
+    "develop": "npm-run-all --parallel nodemon watch browser-sync",
+    "nodemon": "nodemon ./bin/www",
+    "browser-sync": "browser-sync --config dev/server/bs-config.js start",
     "watch": "npm-run-all --parallel watch:*",
     "watch:html": "webpack --watch --config dev/html/webpack.config.js",
     "watch:css": "webpack --watch --config dev/css/webpack.config.js",
     "watch:js": "webpack --watch --config dev/js/webpack.config.js",
-    "d": "npm run develop"
+    "d": "npm run develop",
+    "eslint": "eslint --config dev/server/.eslintrc.js server.js models/*/*.js controllers/*/*.js"
   },
   "author": "",
   "license": "ISC",
@@ -29,6 +31,7 @@
     "sequelize": "^4.41.0"
   },
   "devDependencies": {
+    "browser-sync": "^2.26.3",
     "css-loader": "^1.0.1",
     "extract-loader": "^3.0.0",
     "file-loader": "^2.0.0",

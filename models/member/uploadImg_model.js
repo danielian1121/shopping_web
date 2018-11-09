@@ -18,6 +18,6 @@ module.exports = function uploadImg (file) {
       }
     }
     rp(setting).then(result => resolve(result.data.link))
-      .catch(err => reject(err))
+      .catch(() => reject(new Error('照片上傳失敗')))
   })
 }

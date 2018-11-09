@@ -36,6 +36,24 @@ const memberInfo = sequelize.define('member', {
 
 memberInfo.sync()
 
+const product = sequelize.define('product', {
+  id: { type: Sequelize.INTEGER, primaryKey: true, allowNull: false },
+  name: { type: Sequelize.STRING, allowNull: false },
+  price: { type: Sequelize.DECIMAL, allowNull: false },
+  quantity: { type: Sequelize.INTEGER, allowNull: false },
+  img: { type: Sequelize.STRING, allowNull: true },
+  img_name: { type: Sequelize.STRING, allowNull: true },
+  update_date: { type: Sequelize.DATE, allowNull: true },
+  create_date: { type: Sequelize.DATE, allowNull: false },
+  remark: { type: Sequelize.STRING, allowNull: true }
+}, {
+  timestamps: false,
+  tableName: 'product'
+})
+
+product.sync()
+
 module.exports = {
-  memberInfo
+  memberInfo,
+  product
 }

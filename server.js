@@ -2,7 +2,7 @@ global.projectRoot = __dirname
 
 const express = require('express')
 const member = require(`${global.projectRoot}/routes/member`)
-const product = require(`${global.projectRoot}/routes/product`)
+const api = require(`${global.projectRoot}/api/url`)
 const bodyParser = require('body-parser')
 const server = express()
 
@@ -16,7 +16,7 @@ server.use('/js', express.static(`${global.projectRoot}/static/dist/js`))
 
 server.use('/member', member)
 
-server.use('/product', product)
+server.use('/api', api)
 
 server.get('/', (req, res) => {
   res.sendFile(`${global.projectRoot}/static/dist/html/home/index.html`)

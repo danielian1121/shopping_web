@@ -1,4 +1,4 @@
-const member = require('../connection_db').memberInfo
+const member = require('../connection_db').member
 
 module.exports = function memberLogin (memberData) {
   return new Promise((resolve, reject) => {

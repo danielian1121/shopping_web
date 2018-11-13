@@ -1,5 +1,5 @@
 const config = require('../../config/development_config')
-const member = require('../connection_db').memberInfo
+const member = require('../connection_db').member
 const rp = require('request-promise')
 
 module.exports = function deleteImg (id) {

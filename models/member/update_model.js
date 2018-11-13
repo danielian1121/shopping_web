@@ -1,4 +1,4 @@
-const member = require('../connection_db').memberInfo
+const member = require('../connection_db').member
 const encryption = require('./encryption_model')
 
 module.exports = function memberEdit (id, inputData) {

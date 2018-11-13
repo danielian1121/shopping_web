@@ -20,7 +20,7 @@ const sequelize = new Sequelize(
       $like: Op.like
     }
   })
-const memberInfo = sequelize.define('member', {
+const member = sequelize.define('member', {
   id: { type: Sequelize.INTEGER, primaryKey: true, allowNull: false },
   name: { type: Sequelize.STRING, allowNull: false },
   email: { type: Sequelize.STRING, allowNull: false },
@@ -33,8 +33,6 @@ const memberInfo = sequelize.define('member', {
   timestamps: false,
   tableName: 'member'
 })
-
-memberInfo.sync()
 
 const product = sequelize.define('product', {
   id: { type: Sequelize.INTEGER, primaryKey: true, allowNull: false },
@@ -51,9 +49,43 @@ const product = sequelize.define('product', {
   tableName: 'product'
 })
 
+const order = sequelize.define('order', {
+  orderId: { type: Sequelize.INTEGER, primaryKey: true, allowNull: false },
+  memberId: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    references: {
+      model: 'member',
+      referencesKey: 'id'
+    } },
+  productId: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    references: {
+      model: 'product',
+      referencesKey: 'id'
+    } },
+  orderQuantity: { type: Sequelize.INTEGER, allowNull: false },
+  orderPrice: { type: Sequelize.DECIMAL, allowNull: true },
+  isComplete: { type: Sequelize.INTEGER, allowNull: true },
+  update_date: { type: Sequelize.DATE, allowNull: true },
+  order_date: { type: Sequelize.DATE, allowNull: false }
+}, {
+  timestamps: false,
+  tableName: 'orderList'
+})
+
+member.hasMany(order)
+product.hasMany(order)
+
 product.sync()
+member.sync()
+order.sync()
 
 module.exports = {
-  memberInfo,
-  product
+  member,
+  product,
+  order
 }

@@ -3,21 +3,21 @@ const encryption = require('./encryption_model')
 
 module.exports = function memberEdit (id, inputData) {
   return new Promise((resolve, reject) => {
-    let updateDate = {}
+    let updateData = {}
     Object.keys(inputData).map((objKey) => {
-      if (inputData[objKey]) updateDate[objKey] = inputData[objKey]
+      if (inputData[objKey]) updateData[objKey] = inputData[objKey]
     })
-    encryption(updateDate.password)
+    encryption(updateData.password)
       .then(password => {
-        updateDate.password = password
-        return member.update(updateDate, {
+        updateData.password = password
+        return member.update(updateData, {
           where: {
             id: id
           }
         })
       })
       .catch(() => {
-        return member.update(updateDate, {
+        return member.update(updateData, {
           where: {
             id: id
           }

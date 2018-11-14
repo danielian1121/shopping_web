@@ -1,5 +1,5 @@
 const order = require('../connection_db').order
-const product = require('../connection_db').product
+const getProductPrice = require('../../models/product/get_product_price')
 
 const getOrderId = () => {
   return new Promise((resolve, reject) => {
@@ -9,14 +9,6 @@ const getOrderId = () => {
         else resolve(maxId)
       })
       .catch(() => reject(new Error('找尋orderId最大值發生錯誤')))
-  })
-}
-
-const getProductPrice = (productId) => {
-  return new Promise((resolve, reject) => {
-    product.findByPk(productId)
-      .then(result => resolve(result.dataValues.price))
-      .catch(() => reject(new Error('獲取商品價格時發生錯誤')))
   })
 }
 

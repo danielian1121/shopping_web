@@ -1,4 +1,4 @@
-const productData = require('../../models/product/allProduct_model')
+const productData = require('../../models/product/all_product_model')
 
 module.exports = class GetProduct {
   getAllProduct (req, res) {

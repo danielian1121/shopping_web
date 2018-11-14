@@ -1,6 +1,8 @@
 const verify = require('../../models/member/verification_model')
-const orderProductListData = require('../../models/order/orderAllPorduct')
-const getAll = require('../../models/order/allOrder_model')
+const orderProductListData = require('../../models/order/order_all_porduct_model')
+const checkOrderExist = require('../../models/order/check_order_exist_model')
+const getProductPrice = require('../../models/product/get_product_price')
+const updateOrder = require('../../models/order/update_order_model')
 
 module.exports = class Order {
   postOrderAllProduct (req, res, next) {
@@ -41,36 +43,47 @@ module.exports = class Order {
     }
   }
 
-  getAllOrder (req, res, next) {
-    const token = req.headers['token']
-    if (!token) {
-      res.json({
-        status: '查詢訂單時發生錯誤',
-        err: '請重新登入。'
+  editOrder (req, res, next) {
+    checkOrderExist(req.body.orderId, req.body.memberId, req.body.productId)
+      .catch(e => {
+        res.json({
+          status: '更新訂單時發生錯誤',
+          err: e.message
+        })
       })
-    } else {
-      verify(token)
-        .catch(e => {
+      .then(result => {
+        if (result[0].dataValues.isComplete === 1) {
           res.json({
-            status: '訂單輸入時發生錯誤',
-            err: e.message
+            status: '更新訂單時發生錯誤',
+            err: '此訂單已完成'
           })
+        } else {
+          return getProductPrice(result[0].dataValues.productId)
+        }
+      })
+      .then(price => {
+        const condition = {
+          orderId: req.body.orderId,
+          productId: req.body.productId,
+          memberId: req.body.memberId
+        }
+        const updateData = {
+          orderQuantity: req.body.quantity,
+          orderPrice: price * req.body.quantity
+        }
+        return updateOrder(updateData, condition)
+      })
+      .then(result => {
+        res.json({
+          result
         })
-        .then(result => {
-          return getAll()
+      })
+      .catch(e => {
+        res.json({
+          status: '訂單輸入時發生錯誤',
+          err: e.message
         })
-        .then(result => {
-          res.json({
-            result
-          })
-        })
-        .catch(e => {
-          res.json({
-            status: '查詢訂單時發生錯誤',
-            err: e.message
-          })
-        })
-    }
+      })
   }
 }
 

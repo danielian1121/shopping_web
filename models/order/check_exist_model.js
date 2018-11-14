@@ -11,7 +11,10 @@ module.exports = (orderId, memberId, productId) => {
         ]
       }
     })
-      .then(result => resolve(result))
-      .catch(() => reject(new Error('此訂單不存在')))
+      .then(result => {
+        if (result.length) resolve(result)
+        else reject(new Error('找不到此訂單'))
+      })
+      .catch(() => reject(new Error('伺服器發生錯誤，請稍後再試')))
   })
 }

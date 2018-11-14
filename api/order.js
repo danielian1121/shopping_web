@@ -10,6 +10,10 @@ router.post('/', modifyOrder.postOrderAllProduct)
 
 router.put('/', modifyOrder.editOrder)
 
+router.delete('/', modifyOrder.deleteOrder)
+
+router.post('/one', modifyOrder.postOrderOneProduct)
+
 router.get('/', getOrder.getAllOrder)
 
 router.get('/member', getOrder.getOneOrder)

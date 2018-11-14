@@ -12,12 +12,6 @@ module.exports = class Order {
       })
     } else {
       verify(token)
-        .catch(e => {
-          res.json({
-            status: '查詢訂單時發生錯誤',
-            err: e.message
-          })
-        })
         .then(result => {
           return getAll()
         })
@@ -44,12 +38,6 @@ module.exports = class Order {
       })
     } else {
       verify(token)
-        .catch(e => {
-          res.json({
-            status: '查詢訂單時發生錯誤',
-            err: e.message
-          })
-        })
         .then(result => getOne(result))
         .then(result => {
           res.json({

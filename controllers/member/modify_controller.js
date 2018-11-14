@@ -146,12 +146,6 @@ module.exports = class Member {
             })
           } else {
             deleteImg(id)
-              .catch(e => {
-                res.json({
-                  status: '更新失敗',
-                  err: e.message
-                })
-              })
               .then(() => {
                 let fileInfo = {
                   path: files.file.path,
@@ -160,12 +154,6 @@ module.exports = class Member {
                   type: files.file.type
                 }
                 return uploadImg(fileInfo)
-              })
-              .catch(e => {
-                res.json({
-                  status: '更新失敗',
-                  err: e.message
-                })
               })
               .then(path => {
                 let memberUpdateData = {

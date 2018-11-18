@@ -3,7 +3,8 @@ extends /layout/home.pug
 append stylesheets
 
 append content
+  main.content
+    section#cards.cards
 
 append scripts
-  // 路徑用相對會有安全問題
   +js('home/index')

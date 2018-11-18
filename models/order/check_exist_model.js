@@ -1,14 +1,15 @@
 const order = require('../connection_db').order
 
-module.exports = (orderId, memberId, productId) => {
+module.exports = (orderId, memberId, productId = null) => {
   return new Promise((resolve, reject) => {
+    let condition = [
+      { orderId: orderId },
+      { memberId: memberId }
+    ]
+    if (productId) condition[2] = { productId: productId }
     order.findAll({
       where: {
-        $and: [
-          { orderId: orderId },
-          { memberId: memberId },
-          { productId: productId }
-        ]
+        $and: condition
       }
     })
       .then(result => {

@@ -2,10 +2,11 @@ const verify = require('../../models/member/verification_model')
 const orderProductListData = require('../../models/order/order_all_porduct_model')
 const checkOrderExist = require('../../models/order/check_exist_model')
 const checkOrderIdExist = require('../../models/order/check_exit_orderId_model')
-const getProductPrice = require('../../models/product/get_product_price')
+const getProduct = require('../../models/product/get_product')
 const updateOrder = require('../../models/order/update_model')
 const deleteOrder = require('../../models/order/delete_model')
 const addOneOrder = require('../../models/order/order_one_product_model')
+const completeOrder = require('../../models/order/complete_order_model')
 
 module.exports = class Order {
   postOrderAllProduct (req, res, next) {
@@ -65,18 +66,18 @@ module.exports = class Order {
               err: '此訂單已完成'
             })
           } else {
-            return getProductPrice(result[0].dataValues.productId)
+            return getProduct(result[0].dataValues.productId)
           }
         })
-        .then(price => {
+        .then(result => {
           updateData.orderQuantity = req.body.quantity
-          updateData.orderPrice = price * req.body.quantity
+          updateData.orderPrice = result.price * req.body.quantity
           const orderData = {
             orderId: condition.orderId,
             memberId: condition.memberId,
             productId: condition.productId,
             orderQuantity: req.body.quantity,
-            orderPrice: parseInt(price) * parseInt(req.body.quantity),
+            orderPrice: parseInt(result.price) * parseInt(req.body.quantity),
             isComplete: 0,
             order_date: onTime()
           }
@@ -121,12 +122,12 @@ module.exports = class Order {
               err: '此訂單已完成'
             })
           } else {
-            return getProductPrice(result[0].dataValues.productId)
+            return getProduct(result[0].dataValues.productId)
           }
         })
-        .then(price => {
+        .then(result => {
           updateData.orderQuantity = req.body.quantity
-          updateData.orderPrice = price * req.body.quantity
+          updateData.orderPrice = result.price * req.body.quantity
           return updateOrder(updateData, condition)
         })
         .then(result => {
@@ -184,6 +185,31 @@ module.exports = class Order {
         .catch(e => {
           res.json({
             status: '刪除訂單時發生錯誤',
+            err: e.message
+          })
+        })
+    }
+  }
+  putProductComplete (req, res, next) {
+    const token = req.headers['token']
+    if (!token) {
+      res.json({
+        status: '更新訂單時發生錯誤',
+        err: '請重新登入。'
+      })
+    } else {
+      verify(token)
+        .then(memberId => {
+          return completeOrder(req.body.orderId, memberId)
+        })
+        .then(result => {
+          res.json({
+            result
+          })
+        })
+        .catch(e => {
+          res.json({
+            status: '訂單完成時發生錯誤',
             err: e.message
           })
         })

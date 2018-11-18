@@ -1,5 +1,5 @@
 const order = require('../connection_db').order
-const getProductPrice = require('../../models/product/get_product_price')
+const getProduct = require('../product/get_product')
 
 const getOrderId = () => {
   return new Promise((resolve, reject) => {
@@ -26,13 +26,13 @@ module.exports = function orderAllProduct (orderList) {
     }
     let orderAllData = []
     for (let key in productQuantity) {
-      const price = await getProductPrice(key)
+      const result = await getProduct(key)
       const orderData = {
         orderId: orderId,
         memberId: orderList.memberId,
         productId: key,
         orderQuantity: parseInt(productQuantity[key]),
-        orderPrice: parseInt(price) * parseInt(productQuantity[key]),
+        orderPrice: parseInt(result.price) * parseInt(productQuantity[key]),
         isComplete: 0,
         order_date: orderList.orderDate
       }

@@ -14,6 +14,8 @@ router.delete('/', modifyOrder.deleteOrder)
 
 router.post('/one', modifyOrder.postOrderOneProduct)
 
+router.put('/complete', modifyOrder.putProductComplete)
+
 router.get('/', getOrder.getAllOrder)
 
 router.get('/member', getOrder.getOneOrder)

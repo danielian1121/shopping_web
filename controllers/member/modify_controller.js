@@ -64,7 +64,7 @@ module.exports = class Member {
           exp: Math.floor(Date.now() / 1000) + (60 * 60), // token一個小時後過期。
           data: data.id
         }, config.secret) // 需要再另外設置key
-        res.setHeader('token', token)
+        res.cookie('token', token, { signed: true, httpOnly: true, maxAge: 3600000 })
         res.json({
           result: {
             status: '登入成功。',
@@ -83,7 +83,7 @@ module.exports = class Member {
   }
 
   postUpdate (req, res) {
-    const token = req.headers['token']
+    const token = req.signedCookies.token
     if (!token) {
       res.json({
         status: '更新失敗',
@@ -118,7 +118,7 @@ module.exports = class Member {
   }
 
   updateImg (req, res) {
-    let token = req.headers['token']
+    let token = req.signedCookies.token
     if (!token) {
       res.json({
         status: '更新失敗',

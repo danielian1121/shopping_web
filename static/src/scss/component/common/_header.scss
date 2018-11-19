@@ -1,3 +1,5 @@
+@import 'component/common/login';
+
 body > .header {
   display: flex;
 
@@ -30,11 +32,18 @@ body > .header {
       font-size: .6rem;
     }
   }
-  > .header__searchSubmit{
+  > .header__searchSubmit {
     align-self: center;
     margin-top: .15rem;
 
     width: 1.88rem;
     height: 1.18rem;
+  }
+  > .header__nav.nav {
+    > .nav__link.link {
+      > .link__login {
+        cursor: pointer;
+      }
+    }
   }
 }

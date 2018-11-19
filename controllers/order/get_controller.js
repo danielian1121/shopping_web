@@ -4,7 +4,7 @@ const getOne = require('../../models/order/one_order_model')
 
 module.exports = class Order {
   getAllOrder (req, res, next) {
-    const token = req.headers['token']
+    const token = req.signedCookies.token
     if (!token) {
       res.json({
         status: '查詢訂單時發生錯誤',
@@ -30,7 +30,7 @@ module.exports = class Order {
   }
 
   getOneOrder (req, res, next) {
-    const token = req.headers['token']
+    const token = req.signedCookies.token
     if (!token) {
       res.json({
         status: '查詢訂單時發生錯誤',

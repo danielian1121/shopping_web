@@ -6,7 +6,6 @@ export default target => {
   fetch(allProductUrl)
     .then(res => res.json())
     .then(result => {
-      let data = result.rows
-      target.innerHTML = card({data})
+      target.innerHTML = card({data: result.rows})
     })
 }

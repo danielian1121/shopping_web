@@ -10,7 +10,7 @@ const completeOrder = require('../../models/order/complete_order_model')
 
 module.exports = class Order {
   postOrderAllProduct (req, res, next) {
-    const token = req.headers['token']
+    const token = req.signedCookies.token
     if (!token) {
       res.json({
         status: '訂單輸入時發生錯誤',
@@ -42,7 +42,7 @@ module.exports = class Order {
   }
 
   postOrderOneProduct (req, res, next) {
-    const token = req.headers['token']
+    const token = req.signedCookies.token
     if (!token) {
       res.json({
         status: '新增訂單時發生錯誤',
@@ -98,7 +98,7 @@ module.exports = class Order {
   }
 
   editOrder (req, res, next) {
-    const token = req.headers['token']
+    const token = req.signedCookies.token
     if (!token) {
       res.json({
         status: '更新訂單時發生錯誤',
@@ -145,7 +145,7 @@ module.exports = class Order {
   }
 
   deleteOrder (req, res, next) {
-    const token = req.headers['token']
+    const token = req.signedCookies.token
     const productIds = req.body.productId.replace(' ', '')
     const productIdArray = productIds.split(',')
     let condition = {
@@ -191,7 +191,7 @@ module.exports = class Order {
     }
   }
   putProductComplete (req, res, next) {
-    const token = req.headers['token']
+    const token = req.signedCookies.token
     if (!token) {
       res.json({
         status: '更新訂單時發生錯誤',

@@ -1,3 +1,41 @@
-body > .content > .loginScreen {
+body > .header > .loginScreen {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  margin: auto;
+  top: 20%;
+  left: 40%;
   z-index: 10000;
+  max-width: 25rem;
+  height: auto;
+  border-radius: .1rem;
+  box-shadow: 3px 3px 10px 3px rgba(0,0,0,.14);
+
+  &.loginScreen--active {
+    display: flex;
+  }
+  > .loginScreen__title {
+    margin: 0;
+    padding: 1.2rem 0 1.2rem 0;
+  }
+
+  > .loginScreen__form {
+    display: flex;
+    flex-direction: column;
+
+
+    > .form__text {
+      font-size: 1rem;
+      &.form__text--password {
+        margin-top: 2rem;
+      }
+    }
+    > .form__submit {
+      align-self: center;
+      margin-top: 2rem;
+      font-size: 1rem;
+      height: 2rem;
+      width: 4rem;
+    }
+  }
 }

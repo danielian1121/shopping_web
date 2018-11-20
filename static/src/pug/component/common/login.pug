@@ -1,5 +1,7 @@
-section.loginScreen
-  form.loginScreen__form(action = '/member/login', method = 'post')
-    input.form__username(type = 'text', name = 'email')
-    input.form__password(type = 'password', name = 'password')
-    input.form__submit(type = 'submit', value = '')
+mixin loginScreen()
+  section.loginScreen
+    h2.loginScreen__title 登入
+    form.loginScreen__form(action = '/member/login', method = 'post')
+      input.form__text(type = 'text', name = 'email' placeholder = 'Email' required)
+      input.form__text.form__text--password(type = 'password', name = 'password' placeholder = '密碼' required)
+      input.form__submit(type = 'submit', value = '送出')

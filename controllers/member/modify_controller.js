@@ -73,11 +73,9 @@ module.exports = class Member {
         })
       })
       .catch(e => {
+        res.status(403)
         res.json({
-          result: {
-            status: '登入失敗',
-            err: e.message
-          }
+          error: e.message
         })
       })
   }

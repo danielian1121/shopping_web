@@ -9,6 +9,7 @@ const updateAction = require('../../models/member/update_model')
 const formidable = require('formidable')
 const uploadImg = require('../../models/member/uploadImg_model')
 const deleteImg = require('../../models/member/deleteImg_model')
+const sendRegister = require('../../models/email/send_register_model')
 const check = new Check()
 
 module.exports = class Member {
@@ -18,7 +19,8 @@ module.exports = class Member {
       name: req.body.name,
       password: req.body.password,
       email: req.body.email,
-      create_date: onTime()
+      create_date: onTime(),
+      verification: 0
     }
     check.checkRegisterinfo(memberData)
       .then(() => {
@@ -29,18 +31,27 @@ module.exports = class Member {
         return check.checkEmail(memberData.email)
       })
       .then(() => {
+        memberData.code = Math.random().toString(36).substring(2)
         return toRegister(memberData)
       })
       .then(data => {
+        const mailOption = {
+          from: 'danielian1121@gmail.com',
+          to: data.email,
+          subject: '驗證帳號',
+          text: data.text
+        }
+        return sendRegister(mailOption)
+      })
+      .then(data => {
         res.json({
-          status: '註冊成功。',
-          result: data
+          status: '註冊成功。'
         })
       })
       .catch(e => {
+        res.status(403)
         res.json({
-          status: '註冊失敗。',
-          err: e.message
+          error: e.message
         })
       })
   }

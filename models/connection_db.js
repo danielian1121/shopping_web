@@ -28,7 +28,9 @@ const member = sequelize.define('member', {
   img: { type: Sequelize.STRING, allowNull: true },
   img_name: { type: Sequelize.STRING, allowNull: true },
   update_date: { type: Sequelize.DATE, allowNull: true },
-  create_date: { type: Sequelize.DATE, allowNull: false }
+  create_date: { type: Sequelize.DATE, allowNull: false },
+  verification: { type: Sequelize.INTEGER, allowNull: false },
+  code: { type: Sequelize.STRING, allowNull: false }
 }, {
   timestamps: false,
   tableName: 'member'

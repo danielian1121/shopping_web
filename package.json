@@ -1,7 +1,7 @@
 {
   "name": "shopping_web",
   "version": "1.0.0",
-  "description": "",
+  "description": "shopping web",
   "main": "index.js",
   "scripts": {
     "develop": "npm-run-all --parallel nodemon watch browser-sync",
@@ -12,9 +12,10 @@
     "watch:css": "webpack --watch --config dev/css/webpack.config.js",
     "watch:js": "webpack --watch --config dev/js/webpack.config.js",
     "d": "npm run develop",
-    "eslint": "eslint --config dev/server/.eslintrc.js server.js models/*/*.js controllers/*/*.js"
+    "eslint": "eslint --config dev/server/.eslintrc.js server.js models/*/*.js controllers/*/*.js",
+    "test": "mocha $(find test)"
   },
-  "author": "",
+  "author": "SuKamo",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -31,6 +32,7 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "sequelize": "^4.41.0",
+    "serve-static": "^1.13.2",
     "sweetalert2": "^7.29.1",
     "xoauth2": "^1.2.0"
   },
@@ -45,6 +47,7 @@
     "pug-html-loader": "^1.1.5",
     "pug-loader": "^2.4.0",
     "sass-loader": "^7.1.0",
+    "should": "^13.2.3",
     "style-loader": "^0.23.1",
     "url-loader": "^1.1.2",
     "webpack": "^4.23.1",

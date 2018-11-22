@@ -5,18 +5,14 @@ let timerInterval
 let time = 5
 swal({
   title: '驗證成功',
-  html: '將在 <strong></strong> 秒後跳轉頁面',
-  timer: 5000,
+  html: '即將跳轉頁面',
+  timer: 3000,
   onOpen: () => {
     swal.showLoading()
-    timerInterval = setInterval(() => {
-      swal.getContent().querySelector('strong')
-        .textContent = time--
-    }, 1000)
+    timerInterval = setInterval(() => {}, 1000)
   },
   onClose: () => {
     clearInterval(timerInterval)
     window.location.href = `${document.location.protocol}//${document.location.host}`
   }
 })
-// TODO: Fix timer

@@ -16,9 +16,13 @@ module.exports = function orderAllProduct (orderList) {
   return new Promise(async (resolve, reject) => {
     let orderId = await getOrderId() + 1
     const products = orderList.productId
-    const productArray = products.split(',')
+    let productArray
+    if (products.includes(',')) productArray = products.split(',')
+    else productArray = products
     const quantitys = orderList.quantity
-    const quantityArray = quantitys.split(',')
+    let quantityArray
+    if (products.includes(',')) quantityArray = quantitys.split(',')
+    else quantityArray = quantitys
 
     let productQuantity = {}
     for (let i in productArray) {

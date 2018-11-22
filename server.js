@@ -5,6 +5,7 @@ const member = require(`${global.projectRoot}/routes/member`)
 const api = require(`${global.projectRoot}/api/url`)
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
+const serveStatic = require('serve-static')
 const config = require(`${global.projectRoot}/config/development_config`)
 const server = express()
 
@@ -22,8 +23,10 @@ server.use('/member', member)
 
 server.use('/api', api)
 
-server.get('/', (req, res) => {
+/* server.get('/', (req, res) => {
   res.sendFile(`${global.projectRoot}/static/dist/html/home/index.html`)
-})
+}) */
+
+server.use(serveStatic('/', { 'index': `${global.projectRoot}/static/dist/html/home/index.html` }))
 
 module.exports = server

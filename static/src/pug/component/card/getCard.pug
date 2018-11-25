@@ -1,2 +1,7 @@
+mixin cards(profile)
+  section.cards__card
+
 each profile in data
-  section.cardssss= profile.name
+  +cards(profile)
+  +cards(profile)
+  +cards(profile)

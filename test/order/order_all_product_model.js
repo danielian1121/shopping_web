@@ -1,7 +1,7 @@
 const orderAllProduct = require('../../models/order/order_all_porduct_model')
 const should = require('should')
 const onTime = require('../../models/onTime')
-
+require('../../models/order/delete_model')
 describe('#orderAllProduct', () => {
   it('should return memberId', async () => {
     let orderList = {

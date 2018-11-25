@@ -3,4 +3,15 @@
 
 body > .content {
   color: black;
+  > .cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    > .cards__card {
+      width: 10rem;
+      height: 15rem;
+      margin: 1rem;
+      border: .01rem solid;
+    }
+  }
 }

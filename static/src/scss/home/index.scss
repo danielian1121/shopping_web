@@ -7,11 +7,37 @@ body > .content {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    > .cards__card {
+    > .cards__card.card {
+      display: flex;
+      flex-direction: column;
+      margin: 2rem;
       width: 10rem;
-      height: 15rem;
-      margin: 1rem;
-      border: .01rem solid;
+      height: 12rem;
+      color: black;
+      background-color: #f1f1f1;
+      box-shadow: 5px 10px #b4b4b4;
+      text-decoration: none;
+
+      > .card__img {
+        margin-top: .5rem;
+        align-self: center;
+        height: 7rem;
+        width: 7rem;
+        border-radius: .5rem;
+      }
+
+      > .card__name {
+        margin-top: .5rem;
+        align-self: center;
+        font-size: 1rem;
+      }
+
+      > .card__price {
+        margin: 0;
+        align-self: center;
+        font-size: .8rem;
+        color: red;
+      }
     }
   }
 }

@@ -47,7 +47,7 @@ function registerAlert () {
         )
         return false
       }
-      const postUrl = `${document.location.protocol}//${document.location.host}/member/register`
+      const postUrl = `${document.location.protocol}//${document.location.host}/api/member/register`
       const loginData = {
         name,
         email,
@@ -117,7 +117,7 @@ function addLoginScreen () {
         )
         return false
       }
-      const postUrl = `${document.location.protocol}//${document.location.host}/member/login`
+      const postUrl = `${document.location.protocol}//${document.location.host}/api/member/login`
       const loginData = {
         email,
         password

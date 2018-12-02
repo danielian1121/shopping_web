@@ -1,5 +1,8 @@
 mixin cards(profile)
-  section.cards__card
+  a.cards__card.card(href = `/product/${profile.id}`)
+    img.card__img(src = profile.img, alt = profile.name)
+    h1.card__name= profile.name
+    p.card__price= `$${profile.price}`
 
 each profile in data
   +cards(profile)

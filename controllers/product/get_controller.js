@@ -1,4 +1,5 @@
 const productData = require('../../models/product/all_product_model')
+const url  = require('url')
 
 module.exports = class GetProduct {
   getAllProduct (req, res) {
@@ -15,5 +16,9 @@ module.exports = class GetProduct {
           err: e.message
         })
       })
+  }
+  getOneProduct (req, res) {
+    const id = req.url.replace('/', '')
+    console.log(id)
   }
 }

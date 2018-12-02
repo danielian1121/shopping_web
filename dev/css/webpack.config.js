@@ -6,7 +6,8 @@ module.exports = {
   mode: devMode ? 'development' : 'production',
   entry: {
     'home/index': path.join(projectRoot, 'static/src/scss/home/index.scss'),
-    'redirect/index': path.join(projectRoot, 'static/src/scss/redirect/index.scss')
+    'redirect/index': path.join(projectRoot, 'static/src/scss/redirect/index.scss'),
+    'product/index': path.join(projectRoot, 'static/src/scss/product/index.scss')
   },
   output: {
     filename: '[name].js',

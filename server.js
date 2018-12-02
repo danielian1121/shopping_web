@@ -1,8 +1,8 @@
 global.projectRoot = __dirname
 
 const express = require('express')
-const member = require(`${global.projectRoot}/routes/member`)
 const api = require(`${global.projectRoot}/api/url`)
+const routes = require(`${global.projectRoot}/routes/url`)
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const serveStatic = require('serve-static')
@@ -19,14 +19,10 @@ server.use(cookieParser(config.cookieSecret))
 
 server.use('/js', express.static(`${global.projectRoot}/static/dist/js`))
 
-server.use('/member', member)
-
 server.use('/api', api)
 
-/* server.get('/', (req, res) => {
-  res.sendFile(`${global.projectRoot}/static/dist/html/home/index.html`)
-}) */
+// server.use(serveStatic('/', { 'index': `${global.projectRoot}/static/dist/html/home/index.html` }))
 
-server.use(serveStatic('/', { 'index': `${global.projectRoot}/static/dist/html/home/index.html` }))
+server.use('/', routes)
 
 module.exports = server
